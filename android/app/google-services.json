@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "615900248240",
+    "project_id": "personal-finance-a90fc",
+    "storage_bucket": "personal-finance-a90fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615900248240:android:c27cd14277feb084896375",
+        "android_client_info": {
+          "package_name": "sumit.spofficial.personal_finance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFx1mqzmeCribAYYzwSsLY5ARBnZ2lZbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
