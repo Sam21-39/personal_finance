@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_finance/Services/Auth/auth_services.dart';
 import 'package:personal_finance/Services/Database/database.dart';
 import 'package:personal_finance/Utils/constatns.dart';
+import 'package:personal_finance/Utils/sprefs.dart';
 import 'package:personal_finance/Views/Screens/Home/home.dart';
 
 class AuthBloc {
@@ -16,7 +17,10 @@ class AuthBloc {
   final confPassCtrl = TextEditingController();
   final loadingCtrl = StreamController<bool>.broadcast();
 
-  //declections
+  // Login state Controller
+  final loginCtrl = StreamController<bool>.broadcast();
+
+  // Auth services access
   AuthServices authServices = AuthServices();
 
   isValid(BuildContext context) {
@@ -108,7 +112,16 @@ class AuthBloc {
           );
         }
       }
+      Sprefs().addLoginSP(true);
     }
     loadingCtrl.sink.add(false);
+  }
+
+  getLoginState() async {
+    if (await Sprefs().getLoginSP()) {
+      loginCtrl.sink.add(true);
+    } else {
+      loginCtrl.sink.add(false);
+    }
   }
 }

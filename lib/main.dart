@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:personal_finance/Logic/Auth/auth_bloc.dart';
 import 'package:personal_finance/Views/Screens/Auth/signup.dart';
+import 'package:personal_finance/Views/Screens/Home/home.dart';
 import 'package:personal_finance/firebase_options.dart';
 
 void main() async {
@@ -12,10 +14,22 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  AuthBloc authBloc = AuthBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    authBloc.getLoginState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -28,7 +42,15 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
               useMaterial3: true,
             ),
-            home: const SignUpPage(),
+            home: StreamBuilder<bool>(
+                initialData: false,
+                stream: authBloc.loginCtrl.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.data!) {
+                    return const HomePage();
+                  }
+                  return const SignUpPage();
+                }),
           );
         });
   }

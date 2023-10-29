@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CommonWidgets {
-  static customTextField(TextEditingController controller, String hint,
-      {Widget? icon, bool? readOnly, bool? passWord}) {
+  static customTextField(
+    TextEditingController controller,
+    String hint, {
+    Widget? icon,
+    bool? readOnly,
+    bool? passWord,
+    onTap,
+  }) {
     return TextField(
+      onTap: onTap,
       readOnly: readOnly ?? false,
       obscureText: passWord ?? false,
       controller: controller,

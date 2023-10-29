@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:personal_finance/Models/category_model.dart';
 import 'package:personal_finance/Models/expense_model.dart';
+import 'package:personal_finance/Models/user_model.dart';
 
 class Database {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -14,7 +16,7 @@ class Database {
       firestore.collection('Users').doc(auth.currentUser!.uid).set({
         "userId": auth.currentUser!.uid,
         "name": 'User',
-        "budget": 0,
+        "budget": 0.0,
         "createdAt": Timestamp.now(),
         "updatedAt": Timestamp.now(),
       });
@@ -24,17 +26,43 @@ class Database {
   }
 
   // updates the User
-  Future<void> updateDatabase(String name, double amount) async {
+  Future<void> updateDatabase(UserModel user) async {
     try {
       firestore.collection('Users').doc(auth.currentUser!.uid).update({
-        "userId": auth.currentUser!.uid,
-        "name": name,
-        "budget": amount,
+        "userId": user.userId,
+        "name": user.userName,
+        "budget": user.budget,
         "createdAt": Timestamp.now(),
         "updatedAt": Timestamp.now(),
       });
     } catch (e) {
       log(e.toString());
+    }
+  }
+
+  //get the  user
+  Future<UserModel> getUser() async {
+    try {
+      final user =
+          await firestore.collection('Users').doc(auth.currentUser!.uid).get();
+      return UserModel.fromJson(user.data()!);
+    } catch (e) {
+      log(e.toString());
+      return UserModel(userId: '');
+    }
+  }
+
+  // get Category
+  Future<List<CategoryModel>> getCategories() async {
+    try {
+      final cats = await firestore.collection('Categories').get();
+      final res = List.generate(cats.docs.length,
+          (index) => CategoryModel.fromJson(cats.docs[index].data()));
+      // log(res.first.name.toString());
+      return res;
+    } catch (e) {
+      log(e.toString());
+      return [];
     }
   }
 
