@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:personal_finance/Services/Auth/auth_services.dart';
+import 'package:personal_finance/Services/Database/database.dart';
 import 'package:personal_finance/Utils/constatns.dart';
 import 'package:personal_finance/Views/Screens/Home/home.dart';
 
@@ -71,6 +72,7 @@ class AuthBloc {
           passCtrl.text.trim(),
         );
         if (res == SUCCESS) {
+          await Database().createDatabase();
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => const HomePage(),
